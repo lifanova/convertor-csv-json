@@ -10,9 +10,7 @@ import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 import ru.lifanova.domain.Employee;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +18,7 @@ import java.util.List;
 
 public class ConvertUtils {
     private static final String DATA_DIR_PATH = System.getProperty("user.dir") + "/src/main/resources/data/";
+
     public static List<Employee> parseCSV(String[] columnMapping, String fileName) {
         List<Employee> resultList = null;
 
@@ -38,7 +37,7 @@ public class ConvertUtils {
                     .build();
 
             resultList = csv.parse();
-        } catch (IOException  e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -50,10 +49,20 @@ public class ConvertUtils {
         Gson gson = gsonBuilder.create();
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (Employee employee: list) {
-           stringBuilder.append(gson.toJson(employee));
+        for (Employee employee : list) {
+            stringBuilder.append(gson.toJson(employee));
         }
 
         return stringBuilder.toString();
+    }
+
+    public static void writeToFile(String filename, String json) {
+        String path = DATA_DIR_PATH + filename;
+        File file = new File(path);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            bw.write(json);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }

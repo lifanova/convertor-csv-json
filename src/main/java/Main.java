@@ -8,9 +8,10 @@ public class Main {
     public static void main(String[] args) throws CsvParseException {
         String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
 
-        String fileName = "data.csv";
+        String csvFileName = "data.csv";
+        String jsonFileName = "data.json";
 
-        List<Employee> employeeList = ConvertUtils.parseCSV(columnMapping, fileName);
+        List<Employee> employeeList = ConvertUtils.parseCSV(columnMapping, csvFileName);
 
         if (employeeList == null) {
             throw new CsvParseException("Файл не распарсился!");
@@ -18,5 +19,6 @@ public class Main {
 
         String json = ConvertUtils.listToJson(employeeList);
         System.out.println(json);
+        ConvertUtils.writeToFile(jsonFileName, json);
     }
 }
