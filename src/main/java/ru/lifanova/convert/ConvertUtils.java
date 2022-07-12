@@ -50,7 +50,7 @@ public class ConvertUtils {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (Employee employee : list) {
-            stringBuilder.append(gson.toJson(employee));
+            stringBuilder.append(gson.toJson(employee)).append("\n");
         }
 
         return stringBuilder.toString();
