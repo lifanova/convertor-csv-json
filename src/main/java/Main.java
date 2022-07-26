@@ -5,20 +5,21 @@ import ru.lifanova.exception.CsvParseException;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws CsvParseException {
-        String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
+    public static void main(String[] args) {
+        final String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
 
         String csvFileName = "data.csv";
         String jsonFileName = "data.json";
 
-        List<Employee> employeeList = ConvertUtils.parseCSV(columnMapping, csvFileName);
-
-        if (employeeList == null) {
-            throw new CsvParseException("Файл не распарсился!");
+        List<Employee> employeeList = null;
+        try {
+            employeeList = ConvertUtils.parseCSV(columnMapping, csvFileName);
+        } catch (CsvParseException e) {
+            e.printStackTrace();
+            return;
         }
 
         String json = ConvertUtils.listToJson(employeeList);
-        System.out.println(json);
         ConvertUtils.writeToFile(jsonFileName, json);
     }
 }

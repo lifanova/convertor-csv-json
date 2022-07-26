@@ -9,6 +9,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 import ru.lifanova.domain.Employee;
+import ru.lifanova.exception.CsvParseException;
 
 import java.io.*;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ import java.util.List;
 public class ConvertUtils {
     private static final String DATA_DIR_PATH = System.getProperty("user.dir") + "/src/main/resources/data/";
 
-    public static List<Employee> parseCSV(String[] columnMapping, String fileName) {
+    public static List<Employee> parseCSV(String[] columnMapping, String fileName) throws CsvParseException {
         List<Employee> resultList = null;
 
         if (fileName == null || fileName.isEmpty()) {
@@ -38,7 +39,7 @@ public class ConvertUtils {
 
             resultList = csv.parse();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CsvParseException(e.getMessage());
         }
 
         return resultList;
